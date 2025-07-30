@@ -369,8 +369,9 @@ def generate_all(target_dir, cpdb_version,
         pd.DataFrame(columns=['Entry', 'Gene names']).to_csv(
             os.path.join(sources_dir, 'uniprot.tab'), index=False, sep='\t')
         
-        # Create empty hla_curated.csv
-        pd.DataFrame().to_csv(os.path.join(sources_dir, 'hla_curated.csv'), index=False)
+        # Create empty hla_curated.csv with required gene columns
+        pd.DataFrame(columns=['gene_name', 'uniprot', 'hgnc_symbol', 'ensembl']).to_csv(
+            os.path.join(sources_dir, 'hla_curated.csv'), index=False)
         
         # Create empty uniprot_synonyms.tsv
         pd.DataFrame().to_csv(os.path.join(sources_dir, 'uniprot_synonyms.tsv'), index=False, sep='\t')
