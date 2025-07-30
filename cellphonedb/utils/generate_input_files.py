@@ -353,7 +353,28 @@ def generate_all(target_dir, cpdb_version,
     """
     sources_dir = os.path.join(target_dir, "sources")
     pathlib.Path(sources_dir).mkdir(parents=True, exist_ok=True)
-    db_utils.download_released_files(sources_dir, cpdb_version, "data\\/sources\\/")
+    
+    # Only download reference files if not using user interactions only
+    if not user_interactions_only:
+        db_utils.download_released_files(sources_dir, cpdb_version, "data\\/sources\\/")
+    else:
+        # Create empty/minimal required files for user_interactions_only mode
+        import pandas as pd
+        
+        # Create empty ensembl.txt with required headers
+        pd.DataFrame(columns=['Gene name', 'Gene stable ID', 'HGNC symbol', 'UniProtKB/Swiss-Prot ID']).to_csv(
+            os.path.join(sources_dir, 'ensembl.txt'), index=False, sep='\t')
+        
+        # Create empty uniprot.tab with required headers  
+        pd.DataFrame(columns=['Entry', 'Gene names']).to_csv(
+            os.path.join(sources_dir, 'uniprot.tab'), index=False, sep='\t')
+        
+        # Create empty hla_curated.csv
+        pd.DataFrame().to_csv(os.path.join(sources_dir, 'hla_curated.csv'), index=False)
+        
+        # Create empty uniprot_synonyms.tsv
+        pd.DataFrame().to_csv(os.path.join(sources_dir, 'uniprot_synonyms.tsv'), index=False, sep='\t')
+    
     print("Generating gene_input.csv file into {}".format(target_dir))
     generate_genes(target_dir,
                    user_gene=None,

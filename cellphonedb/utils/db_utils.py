@@ -440,7 +440,7 @@ def create_db(target_dir) -> None:
 
 
 def download_database(target_dir, cpdb_version):
-    download_released_files(target_dir, cpdb_version, "cellphonedb.zip|_input|sources\\/uniprot_synonyms")
+    download_released_files(target_dir, cpdb_version, "cellphonedb.zip|_input|sources\\/")
 
 
 def download_released_files(target_dir, cpdb_version, regex):
@@ -452,7 +452,7 @@ def download_released_files(target_dir, cpdb_version, regex):
             if fname:
                 # Use a local variable instead of modifying target_dir in-place
                 current_target_dir = target_dir
-                if re.search("sources", fpath):
+                if "sources/" in fpath:
                     current_target_dir = os.path.join(target_dir, "sources")
                 pathlib.Path(current_target_dir).mkdir(parents=True, exist_ok=True)
                 with open(os.path.join(current_target_dir, fname), 'wb') as f:
