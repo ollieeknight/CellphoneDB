@@ -365,8 +365,8 @@ def generate_all(target_dir, cpdb_version,
         pd.DataFrame(columns=['Gene name', 'Gene stable ID', 'HGNC symbol', 'UniProtKB/Swiss-Prot ID']).to_csv(
             os.path.join(sources_dir, 'ensembl.txt'), index=False, sep='\t')
         
-        # Create empty uniprot.tab with required headers  
-        pd.DataFrame(columns=['Entry', 'Gene names']).to_csv(
+        # Create empty uniprot.tab with all required headers for both gene and protein generation
+        pd.DataFrame(columns=['Entry', 'Entry name', 'Gene names']).to_csv(
             os.path.join(sources_dir, 'uniprot.tab'), index=False, sep='\t')
         
         # Create empty hla_curated.csv with required gene columns
@@ -375,6 +375,9 @@ def generate_all(target_dir, cpdb_version,
         
         # Create empty uniprot_synonyms.tsv
         pd.DataFrame().to_csv(os.path.join(sources_dir, 'uniprot_synonyms.tsv'), index=False, sep='\t')
+        
+        # Create empty protein_curated.csv (needed for protein generation)
+        pd.DataFrame().to_csv(os.path.join(sources_dir, 'protein_curated.csv'), index=False)
     
     print("Generating gene_input.csv file into {}".format(target_dir))
     generate_genes(target_dir,
