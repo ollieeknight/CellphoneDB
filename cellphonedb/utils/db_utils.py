@@ -450,12 +450,14 @@ def download_released_files(target_dir, cpdb_version, regex):
         if re.search(regex, fpath):
             fname = fpath.split("/")[-1]
             if fname:
+                # Use a local variable instead of modifying target_dir in-place
+                current_target_dir = target_dir
                 if re.search("sources", fpath):
-                    target_dir = os.path.join(target_dir, "sources")
-                pathlib.Path(target_dir).mkdir(parents=True, exist_ok=True)
-                with open(os.path.join(target_dir, fname), 'wb') as f:
+                    current_target_dir = os.path.join(target_dir, "sources")
+                pathlib.Path(current_target_dir).mkdir(parents=True, exist_ok=True)
+                with open(os.path.join(current_target_dir, fname), 'wb') as f:
                     f.write(zipContent.read(fpath))
-                    print("Downloaded {} into {}".format(fname, target_dir))
+                    print("Downloaded {} into {}".format(fname, current_target_dir))
 
 
 def get_dfs(gene_input=None, protein_input=None, complex_input=None, interaction_input=None,
